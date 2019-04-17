@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 type power struct {
@@ -10,9 +11,9 @@ type power struct {
 }
 
 type location struct {
-	x float32
-	y float32
-	z float32
+	x float64
+	y float64
+	z float64
 }
 
 type nonPlayerCharacter struct {
@@ -62,8 +63,7 @@ func (loc location) string() string  {
 }
 
 func (loc location) euclideanDistance(target location) float64 {
-	//return math.Sqrt((loc.x - target.x) * (loc.x - target.x) + (loc.y - target.y) * (loc.y - target.y) + (loc.z - target.z) * (loc.z - target.z))
-	return 0
+	return math.Sqrt((loc.x - target.x) * (loc.x - target.x) + (loc.y - target.y) * (loc.y - target.y) + (loc.z - target.z) * (loc.z - target.z))
 }
 
 func (npc nonPlayerCharacter) distanceTo(target nonPlayerCharacter) float64 {
