@@ -1,11 +1,10 @@
-package main
+package service
 
 import (
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 	"github.com/urfave/negroni"
 	"net/http"
-	"os"
 )
 
 func NewServer() *negroni.Negroni  {
@@ -28,15 +27,4 @@ func testHandler(formatter *render.Render) http.HandlerFunc {
 			Test string
 		}{"This is a test"})
 	}
-}
-
-func main()  {
-	port := os.Getenv("PORT")
-
-	if (len(port) == 0) {
-		port = "3000";
-	}
-
-	server := NewServer()
-	server.Run(":" + port)
 }
