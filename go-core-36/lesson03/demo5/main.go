@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"./lib"
 )
 
 var name string
@@ -12,5 +13,5 @@ func init()  {
 
 func main()  {
 	flag.Parse()
-	hello(name)
+	lib.Hello(name)
 }

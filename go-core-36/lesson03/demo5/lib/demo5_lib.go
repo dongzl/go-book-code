@@ -1,7 +1,7 @@
-package main
+package lib
 
 import "fmt"
 
-func hello(name string)  {
+func Hello(name string)  {
 	fmt.Printf("Hello, %s!\n", name)
 }
