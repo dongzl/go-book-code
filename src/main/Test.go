@@ -15,7 +15,7 @@ func main() {
 	}
 	// 统计计算耗时
 	elapsed := time.Since(start)
-	
+
 	fmt.Printf(" 执行消耗的时间为:", elapsed)
 	fmt.Println(", result:", result)
 
@@ -32,6 +32,7 @@ func main() {
 	fmt.Printf(" 执行消耗的时间为:", elapsed)
 	fmt.Println(", result:", result)
 }
+
 // 在协程中异步执行累加操作，累加结果通过 channel 传递
 func calc(from uint64, to uint64) <-chan uint64 {
 	// channel 用于协程间的通信
