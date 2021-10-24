@@ -15,3 +15,10 @@
 ### go-core-36
 - 书名：极客时间《Go语言核心36讲》源码内容
 - 作者：郝林
+
+### go-shici
+
+go-shici 是一个 GO 语言爬虫实战项目。
+
+教学视频地址：[GO语言爬虫实战项目](https://www.bilibili.com/video/BV1KJ411c7eD?spm_id_from=333.999.0.0)
+项目源码 Github 地址：[go-shici](https://github.com/markusleevip/go-shici)
