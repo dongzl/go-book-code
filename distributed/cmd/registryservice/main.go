@@ -15,7 +15,7 @@ func main() {
 	defer cancel()
 
 	var srv http.Server
-	srv.Addr= registry.ServerPort
+	srv.Addr = registry.ServerPort
 
 	go func() {
 		log.Println(srv.ListenAndServe())
@@ -30,6 +30,6 @@ func main() {
 		cancel()
 	}()
 
-	<- ctx.Done()
+	<-ctx.Done()
 	fmt.Println("Shutting down registry service")
 }
