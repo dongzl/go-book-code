@@ -20,82 +20,80 @@ import (
 	"unicode/utf8"
 )
 
-const contentReStr =".*?[，。、！：？；]"
+const contentReStr = ".*?[，。、！：？；]"
 
 var (
-	dpi      =  float64(72)
-	fontFile = "../data/kaiti.TTF"
-	qrcodeFile = "../data/qrcode.jpg"
-	hinting  = "none"
-	size     = float64(44)
-	width	 = 443
-	height   = 959
-	spacing  = float64(1.5)
-	leftSpace= 100
-	topSpace = 50
-	titleLineSize = 8
-	wonb     = false
-	pageSize = 11
-	calcSize = float64(13)
-	contentRes = regexp.MustCompile(contentReStr)
-	imgFileName = "/Users/dongzonglei/data/poems/%s.png"
-	imgFileNameQrCode= "/Users/dongzonglei/data/poems/qr/%s.jpg"
-	imgFileNameSave= "%s.jpg"
+	dpi               = float64(72)
+	fontFile          = "../data/kaiti.TTF"
+	qrcodeFile        = "../data/qrcode.jpg"
+	hinting           = "none"
+	size              = float64(44)
+	width             = 443
+	height            = 959
+	spacing           = float64(1.5)
+	leftSpace         = 100
+	topSpace          = 50
+	titleLineSize     = 8
+	wonb              = false
+	pageSize          = 11
+	calcSize          = float64(13)
+	contentRes        = regexp.MustCompile(contentReStr)
+	imgFileName       = "/Users/dongzonglei/data/poems/%s.png"
+	imgFileNameQrCode = "/Users/dongzonglei/data/poems/qr/%s.jpg"
+	imgFileNameSave   = "%s.jpg"
 )
 
-
-func calcImage(poem db.Poem) (imgBean bean.ImageBean ,err error){
-	imgBean.Height=height
+func calcImage(poem db.Poem) (imgBean bean.ImageBean, err error) {
+	imgBean.Height = height
 	imgBean.Spacing = spacing
 	imgBean.Size = size
-	imgBean.LeftSpace= leftSpace
+	imgBean.LeftSpace = leftSpace
 	imgBean.TopSpace = topSpace
-	content:=contentRes.FindAllString(strings.Replace(poem.Content," ","",-1),-1)
+	content := contentRes.FindAllString(strings.Replace(poem.Content, " ", "", -1), -1)
 
-
-	resultContent := make([]string,0)
-	if utf8.RuneCountInString(poem.Title)>titleLineSize{
+	resultContent := make([]string, 0)
+	if utf8.RuneCountInString(poem.Title) > titleLineSize {
 		resultTitle := SubStringTitle(poem.Title)
-		resultContent = append(resultContent,resultTitle...)
-	}else{
-		resultContent = append(resultContent,poem.Title)
+		resultContent = append(resultContent, resultTitle...)
+	} else {
+		resultContent = append(resultContent, poem.Title)
 	}
 
-	resultContent = append(resultContent,"")
-	resultContent = append(resultContent,content...)
-	resultContent = append(resultContent,poem.Author+" "+poem.Dynasty)
-	imgBean.Lines=len(resultContent)
-	for index:= range resultContent{
-		if utf8.RuneCountInString(resultContent[index])>imgBean.MaxLen {
+	resultContent = append(resultContent, "")
+	resultContent = append(resultContent, content...)
+	resultContent = append(resultContent, poem.Author+" "+poem.Dynasty)
+	imgBean.Lines = len(resultContent)
+	for index := range resultContent {
+		if utf8.RuneCountInString(resultContent[index]) > imgBean.MaxLen {
 			imgBean.MaxLen = utf8.RuneCountInString(resultContent[index])
 		}
 	}
-	if imgBean.MaxLen>7 {
-		imgBean.LeftSpace=50
+	if imgBean.MaxLen > 7 {
+		imgBean.LeftSpace = 50
 	}
-	if imgBean.MaxLen>10 {
-		imgBean.Size=32
+	if imgBean.MaxLen > 10 {
+		imgBean.Size = 32
 	}
-	if imgBean.Lines>pageSize{
-		lensF:= float64(imgBean.Lines) / calcSize
-		if imgBean.Size<36{
-			lensF= float64(imgBean.Lines) / float64(pageSize)
+	if imgBean.Lines > pageSize {
+		lensF := float64(imgBean.Lines) / calcSize
+		if imgBean.Size < 36 {
+			lensF = float64(imgBean.Lines) / float64(pageSize)
 		}
-		imgBean.Height = int(lensF*float64(height))+80
+		imgBean.Height = int(lensF*float64(height)) + 80
 	}
-	if imgBean.Lines<9 {
-		imgBean.TopSpace=200
+	if imgBean.Lines < 9 {
+		imgBean.TopSpace = 200
 	}
 
 	imgBean.Content = resultContent
-	fmt.Println("imgBean.MaxLen=",imgBean.MaxLen)
-	fmt.Println("imgBean.Height=",imgBean.Height)
-	fmt.Println("imgBean.Size=",imgBean.Size)
-	fmt.Println("imgBean.LeftSpace=",imgBean.LeftSpace)
-	fmt.Println("imgBean.TopSpace=",imgBean.TopSpace)
-	fmt.Println("imgBean.Lines=",imgBean.Lines)
-	fmt.Println("imgBean.Spacing=",imgBean.Spacing)
-	fmt.Println("imgBean.Content=",imgBean.Content)
+	fmt.Println("imgBean.MaxLen=", imgBean.MaxLen)
+	fmt.Println("imgBean.Height=", imgBean.Height)
+	fmt.Println("imgBean.Size=", imgBean.Size)
+	fmt.Println("imgBean.LeftSpace=", imgBean.LeftSpace)
+	fmt.Println("imgBean.TopSpace=", imgBean.TopSpace)
+	fmt.Println("imgBean.Lines=", imgBean.Lines)
+	fmt.Println("imgBean.Spacing=", imgBean.Spacing)
+	fmt.Println("imgBean.Content=", imgBean.Content)
 	return imgBean, nil
 }
 
@@ -113,8 +111,8 @@ func CreateShiImage(poem db.Poem) {
 		return
 	}
 
-	imgBean,_ := calcImage(poem)
-	resultContent:=imgBean.Content
+	imgBean, _ := calcImage(poem)
+	resultContent := imgBean.Content
 	// Initialize the context.
 	fg, bg := image.Black, image.NewUniform(color.RGBA{189, 153, 95, 0xff})
 	if wonb {
@@ -137,7 +135,6 @@ func CreateShiImage(poem db.Poem) {
 		c.SetHinting(font.HintingFull)
 	}
 
-
 	// Draw the text.
 	pt := freetype.Pt(imgBean.LeftSpace, imgBean.TopSpace+int(c.PointToFixed(imgBean.Size)>>6))
 	for _, s := range resultContent {
@@ -150,8 +147,8 @@ func CreateShiImage(poem db.Poem) {
 	}
 
 	// Save that RGBA image to disk.
-	fileName :=poem.Author+"_"+strings.Replace(poem.Title,"/","",-1)
-	outFile, err := os.Create(fmt.Sprintf(imgFileName,fileName))
+	fileName := poem.Author + "_" + strings.Replace(poem.Title, "/", "", -1)
+	outFile, err := os.Create(fmt.Sprintf(imgFileName, fileName))
 	if err != nil {
 		log.Println(err)
 		os.Exit(1)
@@ -169,13 +166,13 @@ func CreateShiImage(poem db.Poem) {
 		log.Println(err)
 		os.Exit(1)
 	}
-	CreateQrCodeImg(poem,fmt.Sprintf(imgFileName,fileName),fmt.Sprintf(imgFileNameQrCode,fileName+"_qr"))
+	CreateQrCodeImg(poem, fmt.Sprintf(imgFileName, fileName), fmt.Sprintf(imgFileNameQrCode, fileName+"_qr"))
 	fmt.Println("Wrote out.png OK.")
 }
 
-func CreateQrCodeImg(poem db.Poem,fileName string,qrFileName string){
-	imgb,_ := os.Open(fileName)
-	pngPic ,_ :=png.Decode(imgb)
+func CreateQrCodeImg(poem db.Poem, fileName string, qrFileName string) {
+	imgb, _ := os.Open(fileName)
+	pngPic, _ := png.Decode(imgb)
 
 	wmb, _ := os.Open(qrcodeFile)
 	watermark, _ := jpeg.Decode(wmb)
@@ -185,25 +182,25 @@ func CreateQrCodeImg(poem db.Poem,fileName string,qrFileName string){
 	b := pngPic.Bounds()
 	m := image.NewNRGBA(b)
 
-	draw.Draw(m,b,pngPic,image.Point{},draw.Src)
-	draw.Draw(m,watermark.Bounds().Add(offset),watermark,image.ZP,draw.Over)
+	draw.Draw(m, b, pngPic, image.Point{}, draw.Src)
+	draw.Draw(m, watermark.Bounds().Add(offset), watermark, image.ZP, draw.Over)
 
 	imgw, _ := os.Create(qrFileName)
-	jpeg.Encode(imgw,m ,&jpeg.Options{100})
+	jpeg.Encode(imgw, m, &jpeg.Options{100})
 	defer imgw.Close()
 }
 
-func SubStringTitle(title string) (titles []string){
-	titleSize :=utf8.RuneCountInString(title)
-	num := titleSize/titleLineSize
+func SubStringTitle(title string) (titles []string) {
+	titleSize := utf8.RuneCountInString(title)
+	num := titleSize / titleLineSize
 	//fmt.Println(num)
-	titles =make([]string,0)
+	titles = make([]string, 0)
 	titleRune := []rune(title)
-	for i:=0;i<num;i++{
-		titles = append(titles,string(titleRune[i*titleLineSize:(i+1)*titleLineSize]))
+	for i := 0; i < num; i++ {
+		titles = append(titles, string(titleRune[i*titleLineSize:(i+1)*titleLineSize]))
 	}
-	if titleSize>titleLineSize*num{
-		titles = append(titles,string(titleRune[num*titleLineSize:]))
+	if titleSize > titleLineSize*num {
+		titles = append(titles, string(titleRune[num*titleLineSize:]))
 	}
 	return titles
 }

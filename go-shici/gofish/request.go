@@ -8,10 +8,10 @@ import (
 )
 
 type Request struct {
-	Url string
+	Url    string
 	Method string
 	Header *http.Header
-	Body io.Reader
+	Body   io.Reader
 	Handle Handle
 	Client http.Client
 }
@@ -35,7 +35,7 @@ func (r *Request) Do() error {
 	return nil
 }
 
-func NewRequest (method, Url, userAgent string, handle Handle, Body io.Reader) (*Request, error) {
+func NewRequest(method, Url, userAgent string, handle Handle, Body io.Reader) (*Request, error) {
 	_, err := url.Parse(Url)
 	if err != nil {
 		return nil, err
@@ -52,10 +52,10 @@ func NewRequest (method, Url, userAgent string, handle Handle, Body io.Reader) (
 		},
 	}
 	return &Request{
-		Url: Url,
+		Url:    Url,
 		Method: method,
 		Header: &hdr,
-		Body: Body,
+		Body:   Body,
 		Handle: handle,
 		Client: client,
 	}, nil

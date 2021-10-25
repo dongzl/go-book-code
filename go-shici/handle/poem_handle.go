@@ -23,7 +23,6 @@ func getUrl(url string, size int) []string {
 }
 
 type PomeInfoHandle struct {
-
 }
 
 func (h *PomeInfoHandle) Worker(body io.Reader, url string) {

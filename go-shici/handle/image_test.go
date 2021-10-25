@@ -10,7 +10,7 @@ func Test_CreateImg(t *testing.T) {
 	if err != nil {
 		return
 	}
-	for index:= range poems{
+	for index := range poems {
 		CreateShiImage(poems[index])
 	}
 }

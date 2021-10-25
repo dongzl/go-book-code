@@ -11,7 +11,6 @@ import (
 var baseUrl = "https://so.gushiwen.cn"
 
 type AuthorHandle struct {
-	
 }
 
 func (h *AuthorHandle) Worker(body io.Reader, url string) {
@@ -29,7 +28,7 @@ func (h *AuthorHandle) Worker(body io.Reader, url string) {
 
 		h := PomeHomeHandle{}
 		fish := gofish.NewGoFish()
-		request, err := gofish.NewRequest("GET", baseUrl + link, gofish.UserAgent, &h, nil)
+		request, err := gofish.NewRequest("GET", baseUrl+link, gofish.UserAgent, &h, nil)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -40,7 +39,6 @@ func (h *AuthorHandle) Worker(body io.Reader, url string) {
 }
 
 type PomeHomeHandle struct {
-
 }
 
 func (h *PomeHomeHandle) Worker(body io.Reader, url string) {
@@ -57,11 +55,11 @@ func (h *PomeHomeHandle) Worker(body io.Reader, url string) {
 			return
 		}
 
-		fmt.Println("作品主页=", baseUrl + link)
+		fmt.Println("作品主页=", baseUrl+link)
 
 		h := PomeInfoHandle{}
 		fish := gofish.NewGoFish()
-		request, err := gofish.NewRequest("GET", baseUrl + link, gofish.UserAgent, &h, nil)
+		request, err := gofish.NewRequest("GET", baseUrl+link, gofish.UserAgent, &h, nil)
 		if err != nil {
 			fmt.Println(err)
 			return

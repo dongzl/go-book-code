@@ -6,7 +6,7 @@ import (
 	"go-shici/handle"
 )
 
-func main()  {
+func main() {
 	authors := "https://so.gushiwen.cn/authors/"
 
 	h := handle.AuthorHandle{}

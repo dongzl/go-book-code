@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	db *sql.DB
+	db  *sql.DB
 	err error
 )
 
