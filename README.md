@@ -30,3 +30,5 @@ go-shici 是一个 GO 语言爬虫实战项目。
 
 - [go: cannot determine module path for source directory /Users/dongzonglei/source_code/Github/go-book-code/distributed (outside GOPATH, module path must be specified)
   ](https://blog.csdn.net/ciel_yu/article/details/107847578)
+  
+- [go调试出现listen tcp: lookup localhost: no such host的解决方案](https://www.jianshu.com/p/33e755d5360e)
