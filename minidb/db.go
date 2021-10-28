@@ -39,7 +39,7 @@ func Open(dirPath string) (*MiniDB, error) {
 	return db, nil
 }
 
-// Merge 合并数据文件，在 rosedb 当中是 Reclaim 方法
+// Merge 合并数据文件，在rosedb当中是 Reclaim 方法
 func (db *MiniDB) Merge() error {
 	// 没有数据，忽略
 	if db.dbFile.Offset == 0 {
@@ -60,12 +60,10 @@ func (db *MiniDB) Merge() error {
 			}
 			return err
 		}
-
 		// 内存中的索引状态是最新的，直接对比过滤出有效的 Entry
 		if off, ok := db.indexes[string(e.Key)]; ok && off == offset {
 			validEntries = append(validEntries, e)
 		}
-
 		offset += e.GetSize()
 	}
 
@@ -75,7 +73,6 @@ func (db *MiniDB) Merge() error {
 		if err != nil {
 			return err
 		}
-
 		defer os.Remove(mergeDBFile.File.Name())
 
 		// 重新写入有效的 entry
@@ -85,6 +82,7 @@ func (db *MiniDB) Merge() error {
 			if err != nil {
 				return err
 			}
+
 			// 更新索引
 			db.indexes[string(entry.Key)] = writeOff
 		}
@@ -98,10 +96,8 @@ func (db *MiniDB) Merge() error {
 
 		// 获取文件名
 		mergeDBFileName := mergeDBFile.File.Name()
-
 		// 关闭文件
 		mergeDBFile.File.Close()
-
 		// 临时文件变更为新的数据文件
 		os.Rename(mergeDBFileName, db.dirPath+string(os.PathSeparator)+FileName)
 
@@ -115,6 +111,7 @@ func (db *MiniDB) Put(key []byte, value []byte) (err error) {
 	if len(key) == 0 {
 		return
 	}
+
 	db.mu.Lock()
 	defer db.mu.Unlock()
 
@@ -123,6 +120,7 @@ func (db *MiniDB) Put(key []byte, value []byte) (err error) {
 	entry := NewEntry(key, value, PUT)
 	// 追加到数据文件当中
 	err = db.dbFile.Write(entry)
+
 	// 写到内存
 	db.indexes[string(key)] = offset
 	return
@@ -133,8 +131,9 @@ func (db *MiniDB) Get(key []byte) (val []byte, err error) {
 	if len(key) == 0 {
 		return
 	}
-	db.mu.Lock()
-	defer db.mu.Unlock()
+
+	db.mu.RLock()
+	defer db.mu.RUnlock()
 
 	// 从内存当中取出索引信息
 	offset, ok := db.indexes[string(key)]
@@ -152,7 +151,7 @@ func (db *MiniDB) Get(key []byte) (val []byte, err error) {
 	if e != nil {
 		val = e.Value
 	}
-	return nil, err
+	return
 }
 
 // Del 删除数据
@@ -179,7 +178,7 @@ func (db *MiniDB) Del(key []byte) (err error) {
 
 	// 删除内存中的 key
 	delete(db.indexes, string(key))
-	return err
+	return
 }
 
 // 从文件当中加载索引
@@ -201,6 +200,7 @@ func (db *MiniDB) loadIndexesFromFile() {
 
 		// 设置索引状态
 		db.indexes[string(e.Key)] = offset
+
 		if e.Mark == DEL {
 			// 删除内存中的 key
 			delete(db.indexes, string(e.Key))
