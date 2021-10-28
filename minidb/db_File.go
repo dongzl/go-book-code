@@ -5,6 +5,7 @@ import "os"
 const FileName = "minidb.data"
 const MergeFileName = "minidb.data.merge"
 
+// DBFile 数据文件定义
 type DBFile struct {
 	File   *os.File
 	Offset int64
@@ -23,16 +24,19 @@ func newInternal(fileName string) (*DBFile, error) {
 	return &DBFile{Offset: stat.Size(), File: file}, nil
 }
 
+// NewDBFile 创建一个新的数据文件
 func NewDBFile(path string) (*DBFile, error) {
 	fileName := path + string(os.PathSeparator) + FileName
 	return newInternal(fileName)
 }
 
+// NewMergeDBFile 新建一个合并时的数据文件
 func NewMergeDBFile(path string) (*DBFile, error) {
 	fileName := path + string(os.PathSeparator) + MergeFileName
 	return newInternal(fileName)
 }
 
+// Read 从 offset 处开始读取
 func (df *DBFile) Read(offset int64) (e *Entry, err error) {
 	buf := make([]byte, entryHeaderSize)
 	if _, err = df.File.ReadAt(buf, offset); err != nil {

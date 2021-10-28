@@ -32,6 +32,7 @@ func (e *Entry) GetSize() int64 {
 	return int64(entryHeaderSize + e.KeySize + e.ValueSize)
 }
 
+// Encode 编码 Entry，返回字节数组
 func (e *Entry) Encode() ([]byte, error) {
 	buf := make([]byte, e.GetSize())
 	binary.BigEndian.PutUint32(buf[0:4], e.KeySize)
@@ -42,6 +43,7 @@ func (e *Entry) Encode() ([]byte, error) {
 	return buf, nil
 }
 
+// 解码 buf 字节数组，返回 Entry
 func Decode(buf []byte) (*Entry, error) {
 	ks := binary.BigEndian.Uint32(buf[0:4])
 	vs := binary.BigEndian.Uint32(buf[4:8])
