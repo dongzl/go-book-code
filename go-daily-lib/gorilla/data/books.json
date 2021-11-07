@@ -1,0 +1,23 @@
+[
+  {
+    "isbn": "9787111558422",
+    "name": "Go 程序设计语言",
+    "authors": ["艾伦A. A. 多诺万", "李道兵", "高博"],
+    "press": "机械工业出版社",
+    "published_at": "2017-05-01"
+  },
+  {
+    "isbn": "9787115445353",
+    "name": "Go 语言实战",
+    "authors": ["威廉·肯尼迪（William，Kennedy）", "布赖恩·克特森（Brian，Ketelsen）", "埃里克·圣马丁（Erik，St.，Martin）"],
+    "press": "人民邮电出版社",
+    "published_at": "2021-04-01"
+  },
+  {
+    "isbn": "9787115322470",
+    "name": "Go Web编程",
+    "authors": ["郑兆雄（Sau，Sheong，Chang）", "黄健宏"],
+    "press": "人民邮电出版社",
+    "published_at": "2017-12-01"
+  }
+]
