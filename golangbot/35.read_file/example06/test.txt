@@ -1,0 +1,3 @@
+Hello World. Welcome to file handling in Go.
+This is the second line of the file.
+We have reached the end of the file.
