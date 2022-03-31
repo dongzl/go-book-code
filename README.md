@@ -32,3 +32,5 @@ go-shici 是一个 GO 语言爬虫实战项目。
   ](https://blog.csdn.net/ciel_yu/article/details/107847578)
   
 - [go调试出现listen tcp: lookup localhost: no such host的解决方案](https://www.jianshu.com/p/33e755d5360e)
+
+- [GoLang Postgres Testcontainers Init Script Doesn't Work](https://tutorialmeta.com/question/golang-postgres-testcontainers-init-script-doesnt-work)
